@@ -1,0 +1,113 @@
+/*CSS Reset*/
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    max-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content:space-around;
+}
+
+
+#gameBoard{
+    background-image:url("../assets/sprites/background-day.png");
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+    /* background-position: center; */
+    /* object-fit: fill; */
+    min-width:288px;
+    min-height:512px ;
+}
+
+.placeholder{
+    display:none;
+}
+
+.infoBar{
+    flex-grow:1;
+    flex-basis: 0;
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    position:relative;
+}
+
+.infoBar > div:first-child{
+    background-color:#4DC1CB;
+    flex-grow:1;
+    border-left-style:solid;
+    border-left-color:#9FDCD5;
+    border-left-width:2px;
+}
+
+.infoBar >div:nth-child(2){
+    background-image:url("../assets/sprites/base.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height:220px;
+    border-left-style:solid;
+    border-left-color:#5EE371;
+    border-left-width:2px;
+
+}
+
+#score{
+    height: fit-content;
+    text-align: center;
+    overflow-y: auto;
+}
+
+#score> h2{
+    font-size:xx-large;
+}
+
+#score li{
+    list-style: none;
+    font-size: x-large;
+}
+
+
+
+@media screen and (max-width:700px) {
+   .infoBar{
+    /* visibility:hidden; only makes it not visible*/
+    display: none;/*removes it from the flow */
+   } 
+}
+
+@media screen and (min-width:1450px){
+    .placeholder{
+        flex-grow: 1;
+        flex-basis: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .placeholder div:first-child{
+    
+        background-color: #4DC1CB;
+        flex-grow: 1;
+        border-right-style: solid;
+        border-right-color: #9FDCD5;
+        border-right-width: 2px;
+
+    }
+
+    .placeholder div:nth-child(2){
+    
+        background-image: url("../assets/sprites/base.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 220px;
+        border-right-style: solid;
+        border-right-color: #5EE371;
+        border-right-width: 2px;
+    }
+}
