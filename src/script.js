@@ -3,9 +3,10 @@ const scale=window.innerHeight/512;
 const height=Math.floor(scale*512);
 const width=Math.floor(scale*288);
 let nexttickReference;
+let gameHeight=height-(112*scale);
 
-const segments=16;
-const segmentHeight=height/segments;
+const segments=14;
+const segmentHeight=gameHeight/segments;
 let pipeHelper=0;//utility which helps to create pipes periodically
 let pipePos=[];
 const toppipe=new Image();
@@ -35,7 +36,7 @@ const birdHeight=24*scale;
 
 //bird X and Y coordinates
 let birdX=width/2-birdWidth/2;//Required to check if player scored and to check for collision
-let birdY=height/2-birdWidth/2;
+let birdY=height/2-birdWidth/2-300;
 
 //initial bird velocity, (velocity is only in y-axis)
 let birdVel=0;
@@ -67,6 +68,28 @@ const nine=new Image();
 nine.src="../assets/sprites/9.png";
 const numImg=[zero,one,two,three,four,five,six,seven,eight,nine];
 
+//importing background image
+let bg = new Image();
+bg.src = "../assets/sprites/background-day.png";
+
+//importing the base image
+let base = new Image();
+base.src = "../assets/sprites/base.png";
+
+let scoreSound=new Audio();
+scoreSound.src="../assets/audio/point.ogg";
+// scoreSound.preload="auto";//this hints the browser that it can start loading this as soon as possible, 
+scoreSound.load();//this forces the browser to load it
+
+let deathSound=new Audio();
+deathSound.src="../assets/audio/die.ogg"
+// deathSound.preload="auto";
+deathSound.load();
+
+let hitSound=new Audio();
+hitSound.src="../assets/audio/hit.ogg"
+// hitSound.preload="auto";
+hitSound.load();
 
 //accessing the gameBoard canvas
 let gameBoard=document.getElementById("gameBoard");
@@ -89,7 +112,7 @@ function beginningClick(){
     //removing all pipes and resetting bird coordinates
     pipePos = [];
     birdX = width / 2 - birdWidth / 2;
-    birdY = height / 2 - birdWidth / 2;
+    birdY = height / 2 - birdWidth / 2-300;
 
     clearBoard();
     requestAnimationFrame(gameStart);
@@ -107,6 +130,7 @@ function Startup(){
         startScreen.src = "../assets/sprites/startmenu.png";
         let imgWidth = 184 * scale;
         let imgHeight = 267 * scale;
+        drawBoard();
         startScreen.onload = () => {
             ctx.drawImage(startScreen, width / 2 - imgWidth / 2, height / 2 - imgHeight / 2, imgWidth, imgHeight);
         }
@@ -116,16 +140,20 @@ function Startup(){
     }
 }
 
-function drawBoard(){//not used
+function drawBoard(){//not used *edit*-used
 
-    //importing background image
-    let bg = new Image();
-    bg.src = "../assets/sprites/background-day.png";
 
-    //loading the background image when the image has been loaded
-    bg.onload = () => {
-        ctx.drawImage(bg, 0, 0, width, height);
-    };
+    ctx.drawImage(bg, 0, 0, width, height);
+
+
+}
+
+function drawBase(){
+
+    const basewidth = 336 * scale;
+    const baseheight = 112 * scale;
+    ctx.drawImage(base, 0, height - baseheight, basewidth, baseheight);
+
 }
 
 function clearBoard(){//clear board after each frame to draw all the components again
@@ -145,13 +173,13 @@ function drawBird(){
 
     switch(Math.floor(birdAnimationCount/20)){
         case 0:
-            ctx.drawImage(unflapBird, birdX, birdY, birdWidth, birdHeight);
+            ctx.drawImage(unflapBird, birdX, birdY, birdWidth*1.2, birdHeight*1.2);
             break;
         case 1:
-            ctx.drawImage(midflapBird, birdX, birdY, birdWidth, birdHeight);
+            ctx.drawImage(midflapBird, birdX, birdY, birdWidth*1.2, birdHeight*1.2);
             break;
         case 2:
-            ctx.drawImage(downflapBird, birdX, birdY, birdWidth, birdHeight);
+            ctx.drawImage(downflapBird, birdX, birdY, birdWidth*1.2, birdHeight*1.2);
             break;
     }
 }
@@ -179,9 +207,9 @@ function makePipe(){
     pipeHelper++;
     if(pipeHelper==70){//decides how frequent the pipes are generated
         
-        let topPipeSegment=Math.ceil(Math.random()*(segments-6));//gives a random integer from 1-(segments-6) (segments-6)included
+        let topPipeSegment=Math.ceil(Math.random()*(segments-5));//gives a random integer from 1-(segments-6) (segments-6)included
         let topPipe=segmentHeight*topPipeSegment-pipeHeight;
-        let bottomPipe=segmentHeight*(topPipeSegment+5);//only 5 segment gap between pipes, hence (segments-6) option for topPipeSegment ,to ensure atleast 1 segment in the bottom has a pipe 
+        let bottomPipe=segmentHeight*(topPipeSegment+4);//only 5 segment gap between pipes, hence (segments-6) option for topPipeSegment ,to ensure atleast 1 segment in the bottom has a pipe 
         pipePos.push({topY:topPipe,bottomY:bottomPipe,xCoords:width})
 
         pipeHelper=0;
@@ -222,13 +250,15 @@ function checkCollision(){
         if((birdX>X && birdX<(X+pipeWidth))||((birdX+birdWidth)>X && (birdX+birdWidth)<(X+pipeWidth))){//check if bird is within the region of pipe
             
             if(birdY<(topY+pipeHeight)||(birdY+birdHeight)>botY){
+                hitSound.play();
                 running=false; 
                 playerOut=true;
             } 
         }
 
         //bird goes out of the canvas
-        if(birdY<0||(birdY+birdHeight)>gameBoard.height){
+        if(birdY<0||(birdY+birdHeight)>gameHeight){
+            deathSound.play();
             running=false;
             playerOut=true;
         }
@@ -242,6 +272,7 @@ function updateScore(){
         let birdCenter= birdX + (birdWidth / 2);
         let pipeCenter=pipe.xCoords+(pipeWidth/2);
         if(Math.abs(pipeCenter-birdCenter)<=3){//the number changes according to how fast the pipes move
+            scoreSound.play();
             score++;
         }
 
@@ -297,9 +328,10 @@ function gameOverHandle(){
 function drawloop(){
     if(running){
     clearBoard();
-    // drawBoard();//Not required as canvas background is set using CSS
+    drawBoard();//Not required as canvas background is set using CSS,*edit* required due to drawing the base
     drawBird();
     drawPipe();
+    drawBase();
     drawScore();
     requestAnimationFrame(drawloop);
     }
@@ -340,8 +372,9 @@ function gameStart(){
 
 
 let loaded=0;
-const loadlist=[zero,one,two,three,four,five,six,seven,eight,nine,unflapBird,midflapBird,downflapBird,toppipe,botpipe];
-for(let item of loadlist){
+const imgs=[zero,one,two,three,four,five,six,seven,eight,nine,unflapBird,midflapBird,downflapBird,toppipe,botpipe,bg,base];
+const sounds=[hitSound,scoreSound,deathSound];
+for(let item of imgs){
     if(item.complete){//if the image has already loaded
         loaded++;
         continue;
@@ -352,11 +385,20 @@ for(let item of loadlist){
 
     }
 }
+for(let item of sounds){
+    if(item.readyState>=4){//checks if the state of the sounds are such that they can be played, or else it waits for them to load in the else block
+        loaded++;
+    }else{
+        item.oncanplaythrough=()=>{
+            loaded++;
+        }
+    }
+}
 
 //prepare game only after all the images in global scope have loaded
 loadedCheck=setInterval(()=>{
 
-    if (loaded == loadlist.length) {
+    if (loaded == (imgs.length+sounds.length)) {
         Startup();
     }
 },100);

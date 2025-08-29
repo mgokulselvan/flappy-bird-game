@@ -15,9 +15,9 @@ body{
 
 
 #gameBoard{
-    background-image:url("../assets/sprites/background-day.png");
+    /* background-image:url("../assets/sprites/background-day.png"); */
     /* background-repeat: no-repeat; */
-    background-size: cover;
+    /* background-size: cover; */
     /* background-position: center; */
     /* object-fit: fill; */
     min-width:288px;
@@ -46,10 +46,10 @@ body{
 }
 
 .infoBar >div:nth-child(2){
+
+    height:112px;
     background-image:url("../assets/sprites/base.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    height:220px;
+    background-repeat: repeat-x;
     border-left-style:solid;
     border-left-color:#5EE371;
     border-left-width:2px;
@@ -102,10 +102,9 @@ body{
 
     .placeholder div:nth-child(2){
     
+        height:112px;
         background-image: url("../assets/sprites/base.png");
-        background-repeat: no-repeat;
-        background-size: cover;
-        height: 220px;
+        background-repeat: repeat-x;
         border-right-style: solid;
         border-right-color: #5EE371;
         border-right-width: 2px;
