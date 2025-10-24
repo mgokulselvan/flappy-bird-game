@@ -10,9 +10,9 @@ const segmentHeight=gameHeight/segments;
 let pipeHelper=0;//utility which helps to create pipes periodically
 let pipePos=[];
 const toppipe=new Image();
-toppipe.src="../assets/sprites/top-pipe-green.png";
+toppipe.src="assets/sprites/top-pipe-green.png";
 const botpipe=new Image();
-botpipe.src="../assets/sprites/bottom-pipe-green.png";
+botpipe.src="assets/sprites/bottom-pipe-green.png";
 botpipe.style.transform="rotate(180deg)";
 const pipeHeight=320*scale;
 const pipeWidth=52*scale;
@@ -27,9 +27,9 @@ let score=0;
 let unflapBird=new Image();
 let midflapBird=new Image();
 let downflapBird=new Image();
-unflapBird.src="../assets/sprites/yellowbird-upflap.png";
-midflapBird.src="../assets/sprites/yellowbird-midflap.png";
-downflapBird.src="../assets/sprites/yellowbird-downflap.png";
+unflapBird.src="assets/sprites/yellowbird-upflap.png";
+midflapBird.src="assets/sprites/yellowbird-midflap.png";
+downflapBird.src="assets/sprites/yellowbird-downflap.png";
 //bird dimensions scaled to the current window size in proportion
 const birdWidth=34*scale;
 const birdHeight=24*scale;
@@ -47,47 +47,47 @@ let birdAnimationCount=0;
 
 //All numbers to print score
 const zero=new Image();
-zero.src="../assets/sprites/0.png";
+zero.src="assets/sprites/0.png";
 const one=new Image();
-one.src="../assets/sprites/1.png";
+one.src="assets/sprites/1.png";
 const two=new Image();
-two.src="../assets/sprites/2.png";
+two.src="assets/sprites/2.png";
 const three=new Image();
-three.src="../assets/sprites/3.png";
+three.src="assets/sprites/3.png";
 const four=new Image();
-four.src="../assets/sprites/4.png";
+four.src="assets/sprites/4.png";
 const five=new Image();
-five.src="../assets/sprites/5.png";
+five.src="assets/sprites/5.png";
 const six=new Image();
-six.src="../assets/sprites/6.png";
+six.src="assets/sprites/6.png";
 const seven=new Image();
-seven.src="../assets/sprites/7.png";
+seven.src="assets/sprites/7.png";
 const eight=new Image();
-eight.src="../assets/sprites/8.png";
+eight.src="assets/sprites/8.png";
 const nine=new Image();
-nine.src="../assets/sprites/9.png";
+nine.src="assets/sprites/9.png";
 const numImg=[zero,one,two,three,four,five,six,seven,eight,nine];
 
 //importing background image
 let bg = new Image();
-bg.src = "../assets/sprites/background-day.png";
+bg.src = "assets/sprites/background-day.png";
 
 //importing the base image
 let base = new Image();
-base.src = "../assets/sprites/base.png";
+base.src = "assets/sprites/base.png";
 
 let scoreSound=new Audio();
-scoreSound.src="../assets/audio/point.ogg";
+scoreSound.src="assets/audio/point.ogg";
 // scoreSound.preload="auto";//this hints the browser that it can start loading this as soon as possible, 
 scoreSound.load();//this forces the browser to load it
 
 let deathSound=new Audio();
-deathSound.src="../assets/audio/die.ogg"
+deathSound.src="assets/audio/die.ogg"
 // deathSound.preload="auto";
 deathSound.load();
 
 let hitSound=new Audio();
-hitSound.src="../assets/audio/hit.ogg"
+hitSound.src="assets/audio/hit.ogg"
 // hitSound.preload="auto";
 hitSound.load();
 
@@ -127,7 +127,7 @@ function Startup(){
     clearInterval(loadedCheck);
     if (!started) {
         let startScreen = new Image();
-        startScreen.src = "../assets/sprites/startmenu.png";
+        startScreen.src = "assets/sprites/startmenu.png";
         let imgWidth = 184 * scale;
         let imgHeight = 267 * scale;
         drawBoard();
@@ -305,7 +305,7 @@ function gameOverHandle(){
         running=false;
         clearInterval(nexttickReference);
         let gameOver=new Image();
-        gameOver.src="../assets/sprites/gameover.png";
+        gameOver.src="assets/sprites/gameover.png";
         let imgWidth=192*scale;
         let imgHeight=42*scale;
         gameOver.onload = () => {
